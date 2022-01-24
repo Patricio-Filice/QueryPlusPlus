@@ -9,6 +9,10 @@ namespace QueryPlusPlus.Domain.Repository.Entities
 
         [Required]
         [StringLength(255, MinimumLength = 15)]
-        public int Description { get; set; }
+        public string Description { get; set; }
+
+        public int ProductId { get; set; }
+
+        public Product Product { get; set; }
     }
 }

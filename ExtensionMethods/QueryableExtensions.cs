@@ -7,7 +7,7 @@ using QueryPlusPlus.ExtensionMethods.Controllers.Models.Common.Requests.Gets.Lis
 using QueryPlusPlus.Services.Models.Common.Requests.Gets.Lists;
 using QueryPlusPlus.Services.Models.Common.Responses.Gets.Lists;
 
-namespace Template.ExtensionMethods
+namespace QueryPlusPlus.ExtensionMethods
 {
     public static class QueryableExtensions
     {
@@ -56,7 +56,7 @@ namespace Template.ExtensionMethods
         {
             var pagedList = await queryable.CreateResponseGetListPaginatedAsync<TEntity, TResponseGetList>(requestGetListPaginated);
             pagedList.PageItems = (List<TResponseGetList>)mapper.Map<TEntity, TResponseGetList>(await requestGetListPaginated.GetPaginatedQueryable(queryable)
-                                                                                                                         .ToListAsync());
+                                                                                                                             .ToListAsync());
 
             return pagedList;
         }
@@ -67,6 +67,16 @@ namespace Template.ExtensionMethods
             var responseGetListPaginated = await queryable.CreateResponseGetListPaginatedAsync<TEntity, TResponseGetList>(requestGetListPaginated);
             responseGetListPaginated.PageItems = await mapper.ProjectTo<TResponseGetList>(requestGetListPaginated.GetPaginatedQueryable(queryable))
                                                                                                                  .ToListAsync();
+
+            return responseGetListPaginated;
+        }
+
+        public static ResponseGetListPaginated<TResponseGetList> ProjectToPagedList<TEntity, TResponseGetList>(this IQueryable<TEntity> queryable, IMapper mapper, RequestGetListPaginated requestGetListPaginated)
+            where TResponseGetList : class
+        {
+            var responseGetListPaginated = queryable.CreateResponseGetListPaginated<TEntity, TResponseGetList>(requestGetListPaginated);
+            responseGetListPaginated.PageItems = mapper.ProjectTo<TResponseGetList>(requestGetListPaginated.GetPaginatedQueryable(queryable))
+                                                                                                           .ToList();
 
             return responseGetListPaginated;
         }
@@ -85,11 +95,29 @@ namespace Template.ExtensionMethods
             await queryable.FillResponseGetListPaginatedAsync(responseGetListPaginated, requestGetListPaginated);
             return responseGetListPaginated;
         }
+        private static ResponseGetListPaginated<TResponseGetList> CreateResponseGetListPaginated<TEntity, TResponseGetList>(this IQueryable<TEntity> queryable, RequestGetListPaginated requestGetListPaginated)
+            where TResponseGetList : class
+        {
+            var responseGetListPaginated = new ResponseGetListPaginated<TResponseGetList>();
+            queryable.FillResponseGetListPaginated(responseGetListPaginated, requestGetListPaginated);
+            return responseGetListPaginated;
+        }
 
         private async static Task FillResponseGetListPaginatedAsync<TEntity, TResponseGetList>(this IQueryable<TEntity> queryable, ResponseGetListPaginated<TResponseGetList> responseGetListPaginated, RequestGetListPaginated requestGetListPaginated)
             where TResponseGetList : class
         {
-            var totalCount = await queryable.CountAsync();
+            queryable.FillResponseGetListPaginated(responseGetListPaginated, requestGetListPaginated, await queryable.CountAsync());
+        }
+
+        private static void FillResponseGetListPaginated<TEntity, TResponseGetList>(this IQueryable<TEntity> queryable, ResponseGetListPaginated<TResponseGetList> responseGetListPaginated, RequestGetListPaginated requestGetListPaginated)
+            where TResponseGetList : class
+        {
+            queryable.FillResponseGetListPaginated(responseGetListPaginated, requestGetListPaginated, queryable.Count());
+        }
+
+        private static void FillResponseGetListPaginated<TEntity, TResponseGetList>(this IQueryable<TEntity> queryable, ResponseGetListPaginated<TResponseGetList> responseGetListPaginated, RequestGetListPaginated requestGetListPaginated, int totalCount)
+            where TResponseGetList : class
+        {
             responseGetListPaginated.TotalCount = totalCount;
             responseGetListPaginated.PageCount = ((totalCount - 1) / requestGetListPaginated.PageSize) + 1;
         }

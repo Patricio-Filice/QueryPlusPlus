@@ -10,5 +10,7 @@ namespace QueryPlusPlus.Domain.Repository.Entities
         [Required]
         [StringLength(100)]
         public string Name { get; set; }
+
+        public List<Product> Products { get; set; }
     }
 }

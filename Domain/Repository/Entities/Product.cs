@@ -15,5 +15,9 @@ namespace QueryPlusPlus.Domain.Repository.Entities
         public string Description { get; set; }
 
         public List<ProductReview> Reviews { get; set; }
+
+        public int CompanyId { get; set; }
+
+        public Company Company { get; set; }
     }
 }

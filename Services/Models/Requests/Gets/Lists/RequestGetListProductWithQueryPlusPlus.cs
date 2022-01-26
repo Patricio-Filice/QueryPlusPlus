@@ -33,6 +33,9 @@ namespace QueryPlusPlus.Services.Models.Requests.Gets.Lists
         [StringContainsPropertyFilter(nameof(Product.Company), nameof(Product.Company.Name))]
         public string CompanyName { get; set; }
 
+        //Adhered to business logic
+        public bool HotSell { get; set; }
+
         [DefaultValue(nameof(Product.Name))]
         public string SortBy { get; set; }
 

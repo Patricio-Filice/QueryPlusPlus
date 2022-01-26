@@ -19,7 +19,7 @@ It works, does the job, but... it's good enough?
 What about maintainability or reading comprehension?
 
 That's where Query++ enters the chat.
-Let's reformulate the request class to handle all the expression handling like this
+Let's reformulate the request class to handle all the expression handling, like this
 ![Request With Query++](/Assets/Images/RequestWithQuery++.png)
 
 Let's take a better look of this class, first the opening definition to implement the library

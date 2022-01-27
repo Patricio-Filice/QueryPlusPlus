@@ -9,7 +9,7 @@ Companies that have products and reviews associated to those products.
 Simplified in a ERD:
 ![Domain ERD](/Assets/Images/ERD.png)
 
-We have an API related with the listing of products which can we queried through names, ids or descriptions, all of them upholded in this class
+We have an API related with the listing of products which can we queried through names, ids or descriptions, all of them in this class
 ![Request Without Query++](/Assets/Images/RequestWithoutQuery++.png)
 
 Using this code scenario will possible lead to a controller like this
@@ -29,7 +29,7 @@ But afterwards we need to bind the request properties with the ones of the entit
 ![Request With Query++ Property Detail](/Assets/Images/RequestWithQuery++PropertyDetail.png)
 
 Good, and now, how about we see our new controller implementing Query++
-![Controller With Query++](/Assets/Images/ControllerWithQuery++-2.png)
+![Controller With Query++ Explained](/Assets/Images/ControllerWithQuery++-2Explained.png)
 
 That's easy to read and understand, but what about the queries with logic not encompassed by the common operators? Well, you still can add your own logic, add your custom expression and let the process continues just as it would have been.
 
